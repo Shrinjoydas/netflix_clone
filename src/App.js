@@ -1,41 +1,47 @@
-import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Home from './Components/Home';
+import Login from './Components/Login';
+
+
+import './Styles/App.scss';
+import './Styles/Navbar.scss';
+import './Styles/Home.scss';
+import './Styles/Row.scss';
+import './Styles/Banner.scss';
+import './Styles/Login.scss';
+import './Styles/SignIn.scss';
+
+import { auth } from './firebase';
+
+
 
 function App() {
+  const [user, setUser] = useState(null)
+ 
+
+  useEffect(() => {
+    const unsubsribe = auth.onAuthStateChanged((userAuth) => {
+      if (userAuth) {
+        setUser(userAuth)
+      } else {
+        setUser(null)
+           }
+    });
+    return unsubsribe;
+  }, []);
+
   return (
-    <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
-        </Grid>
-      </Box>
-    </ChakraProvider>
+    <Router basename="/netflix_clone">
+      {!user ? (
+        <Login />
+      ) : (
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+      )}
+    </Router>
   );
 }
 

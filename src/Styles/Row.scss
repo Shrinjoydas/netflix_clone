@@ -1,0 +1,33 @@
+.row {
+  padding: 1rem;
+  > h2 {
+    font-size: larger;
+    font-weight: 500;
+  }
+  > div {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > .poster {
+      width: 200px;
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: all 0.5s;
+
+      &:hover {
+        transform: scale(1.09);
+      }
+    }
+
+    > .poster_large {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
